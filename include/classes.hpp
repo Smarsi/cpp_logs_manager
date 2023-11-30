@@ -1,5 +1,5 @@
-#ifndef LOGS_H
-#define LOGS_H
+#ifndef NT_LOG_HPP
+#define NT_LOG_HPP
 
 #include <string>
 #include <filesystem>
@@ -50,9 +50,17 @@ namespace niatec_logs{
             std::string create_log_file(){
                 // Used to generate a filename and a file
                 std::string uuid = get_uuid(), datetimestring, filepath;
+
+                // Date & Time 4 LOG
+                time_t time_now = time(0);
+                std::tm* time_info = std::localtime(&time_now);
+
+                std::stringstream formatted_time;
+                // formatted_time << std::put_time(time_info, "%d/%m/%Y %I:%M %p");
+                formatted_time << std::put_time(time_info, "%Y-%m-%d-%H-%M-%S"); //2023-30-11-15-35-56
+                std::string formatted_time_str = formatted_time.str();
                 
-                datetimestring = "30112023-145533";
-                filepath = this->logs_folder_path + datetimestring + "-" + uuid + ".log";
+                filepath = this->logs_folder_path + formatted_time_str + "-" + uuid + ".log";
 
                 return filepath;
             }
@@ -74,7 +82,7 @@ namespace niatec_logs{
 
                 std::stringstream formatted_time;
                 // formatted_time << std::put_time(time_info, "%d/%m/%Y %I:%M %p");
-                formatted_time << std::put_time(time_info, "%Y-%m-%d-%H:%M:%S"); //2023-30-15:35:56
+                formatted_time << std::put_time(time_info, "%Y-%m-%d-%H:%M:%S"); //2023-30-11-15:35:56
                 std::string formatted_time_str = formatted_time.str();
 
                 // Verifica se o arquivo foi aberto corretamente
