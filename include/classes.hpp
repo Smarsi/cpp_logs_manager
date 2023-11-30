@@ -8,7 +8,7 @@
 #include <cstdio>
 #include <cstring>
 #include <algorithm>
-
+#include <ctime>
 
 namespace fs = std::filesystem;
 
@@ -44,6 +44,7 @@ namespace niatec_logs{
                     return;                
                 }
                 this->logs_folder_path = "../logs/";
+
             }
 
             std::string create_log_file(){
@@ -62,10 +63,19 @@ namespace niatec_logs{
                 return true;
             }
 
-            void log_writer(std::string filepath, std::string log_content, std::string log_type=""){
+            void log_writer(std::string filepath, std::string log_content, std::string log_type="INFO"){
                 // Used to write into an existing file
 
                 std::ofstream outfile(filepath, std::ios::app);
+
+                // Date & Time 4 LOG
+                time_t time_now = time(0);
+                std::tm* time_info = std::localtime(&time_now);
+
+                std::stringstream formatted_time;
+                // formatted_time << std::put_time(time_info, "%d/%m/%Y %I:%M %p");
+                formatted_time << std::put_time(time_info, "%Y-%m-%d-%H:%M:%S"); //2023-30-15:35:56
+                std::string formatted_time_str = formatted_time.str();
 
                 // Verifica se o arquivo foi aberto corretamente
                 if (!outfile.is_open()) {
@@ -73,8 +83,10 @@ namespace niatec_logs{
                     return;
                 }
 
+                log_type = (log_type.empty()) ? "" : log_type;
+
                 // Writer
-                outfile << "2023-30-15:35:56 " + log_type + log_content + "\n";
+                outfile << formatted_time_str << "; " << log_type << "; " << log_content << ";\n";
 
             }
     };
