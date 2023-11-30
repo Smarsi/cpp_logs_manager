@@ -1,0 +1,23 @@
+# vscode
+.vscode
+/.vscode
+.vscode/
+*/.vscode
+.vscode/*
+*.vscode*
+
+# build
+build
+/build
+build/
+*/build
+build/*
+*build*
+
+# logs
+logs
+/logs
+logs/
+*/logs
+logs/*
+*logs*
