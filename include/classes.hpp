@@ -12,39 +12,39 @@
 
 namespace fs = std::filesystem;
 
-std::string get_uuid(){
-    FILE* pipe = popen("uuidgen", "r");
-    if (!pipe) {
+namespace niatec_logs{
+
+    std::string get_uuid(){
+        FILE* pipe = popen("uuidgen", "r");
+        if (!pipe) {
+            return "";
+        }
+        char buffer[37]; // UUID tem 36 caracteres, mais um para o terminador nulo
+        if (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+            // Remover o caractere de nova linha no final, se presente
+            buffer[strcspn(buffer, "\n")] = '\0';
+            std::string uuidWithoutHyphens(buffer);
+            uuidWithoutHyphens.erase(std::remove(uuidWithoutHyphens.begin(), uuidWithoutHyphens.end(), '-'), uuidWithoutHyphens.end());
+        
+            return uuidWithoutHyphens;
+        }
+        std::cout << "Erro ao ler UUID gerado!\n";
         return "";
     }
-    char buffer[37]; // UUID tem 36 caracteres, mais um para o terminador nulo
-    if (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
-        // Remover o caractere de nova linha no final, se presente
-        buffer[strcspn(buffer, "\n")] = '\0';
-        std::string uuidWithoutHyphens(buffer);
-        uuidWithoutHyphens.erase(std::remove(uuidWithoutHyphens.begin(), uuidWithoutHyphens.end(), '-'), uuidWithoutHyphens.end());
-    
-        return uuidWithoutHyphens;
-    }
-    std::cout << "Erro ao ler UUID gerado!\n";
-    return "";
-}
 
-namespace niatec_logs{
     class Log_Manager{
-        
+            
         std::string logs_folder_path;
 
         public:
-            Log_Manager(){
+            Log_Manager(std::string log_folder=""){
                 std::string root_folder = fs::current_path();
-                if(!fs::exists("../logs/")){
-                    fs::create_directory("../logs/");
-                    this->logs_folder_path = "../logs/";
-                    return;                
+                log_folder = (log_folder.empty()) ? root_folder+"/logs/" : root_folder+"/"+log_folder; 
+                std::cout << "Logs Folder: " << log_folder << "\n";
+                if(!fs::exists(log_folder)){
+                    fs::create_directory(log_folder);   
                 }
-                this->logs_folder_path = "../logs/";
-
+                this->logs_folder_path = log_folder;
             }
 
             std::string create_log_file(){
@@ -56,19 +56,12 @@ namespace niatec_logs{
                 std::tm* time_info = std::localtime(&time_now);
 
                 std::stringstream formatted_time;
-                // formatted_time << std::put_time(time_info, "%d/%m/%Y %I:%M %p");
                 formatted_time << std::put_time(time_info, "%Y-%m-%d-%H-%M-%S"); //2023-30-11-15-35-56
                 std::string formatted_time_str = formatted_time.str();
                 
                 filepath = this->logs_folder_path + formatted_time_str + "-" + uuid + ".log";
 
                 return filepath;
-            }
-
-            bool create_log_file(std::string filename){
-                // Used when we already have a filename
-
-                return true;
             }
 
             void log_writer(std::string filepath, std::string log_content, std::string log_type="INFO"){
@@ -97,7 +90,7 @@ namespace niatec_logs{
                 outfile << formatted_time_str << "; " << log_type << "; " << log_content << ";\n";
 
             }
-    };
+        };
 }
 
 #endif
