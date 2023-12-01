@@ -5,7 +5,7 @@ Contains files to manage logs with C++
  
 ### How to execute this project
 
-Pre requisits: CMAKE.
+Prerequisites: CMAKE.
 
 1. Clone this repostory using "git clone" command.
 
