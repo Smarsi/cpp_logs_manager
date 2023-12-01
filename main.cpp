@@ -3,7 +3,7 @@
 
 #include "classes.hpp"
 
-niatec_logs::Log_Manager log_manager("./logs/");
+niatec_logs::Log_Manager log_manager;
 
 int main(){
 
