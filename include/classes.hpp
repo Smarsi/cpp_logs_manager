@@ -56,7 +56,7 @@ namespace niatec_logs{
                 std::tm* time_info = std::localtime(&time_now);
 
                 std::stringstream formatted_time;
-                formatted_time << std::put_time(time_info, "%Y-%m-%d-%H-%M-%S"); //2023-30-11-15-35-56
+                formatted_time << std::put_time(time_info, "%Y-%m-%d-%H-%M-%S"); //2023-11-30-15-35-56 = year-month-day-hour-minute-second
                 std::string formatted_time_str = formatted_time.str();
                 
                 filepath = this->logs_folder_path + formatted_time_str + "-" + uuid + ".log";
