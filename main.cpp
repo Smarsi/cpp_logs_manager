@@ -15,7 +15,7 @@ int main(){
     log_manager.log_writer(log_file, "Teste de escrita com tipo de log.", "WARNING");
     log_manager.log_writer(log_file, "Teste de escrita com tipo de log de alerta.", "ALERT");
     log_manager.log_writer(log_file, "Teste de escrita com tipo critico de log.", "CRITICAL");
-    log_manager.log_writer(log_file, "Teste de escrita com tipo critico de debug.", "DEBUG");
+    log_manager.log_writer(log_file, "Teste de escrita com tipo debug de log.", "DEBUG");
 
     return 0;
 }
