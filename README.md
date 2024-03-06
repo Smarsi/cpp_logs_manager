@@ -26,3 +26,9 @@ cmake ..
 ```
 make
 ```
+
+5. Execute
+
+```
+./result
+```
